@@ -2,6 +2,8 @@ import pygame
 from constants import *
 from circleshape import *
 from player import *
+from asteroid import *
+from asteroidfield import *
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -11,10 +13,16 @@ dt = 0
 # creating containers and assigning elements on containers
 updatabe = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
+asteroids = pygame.sprite.Group()
+AsteroidField.containers = (updatabe)
 Player.containers = (updatabe, drawable)
+Asteroid.containers = (asteroids, updatabe, drawable)
 
 #create the player instance
 playr = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+
+# create de asteroids field instance
+field = AsteroidField()
 
 def main ():
     global dt
@@ -43,6 +51,12 @@ def main ():
 # update the updatable container items
         for item in updatabe:
              item.update(dt)
+
+# teste if any asteroid collide with player and end the game if so
+        for item in asteroids:
+            if item.collide_test(playr):
+                print("Game over!")
+                return
 
 # make screen update on every iteration of infinite loop - must be the final of the loop
         pygame.display.flip()
