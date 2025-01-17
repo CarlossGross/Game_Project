@@ -7,6 +7,7 @@ class Player(CircleShape):
     def __init__(self, x, y,):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
+        self.shoot_timer = 0
 
 
 # method that makes a player looks like a triangle (size deppending on the radius)
@@ -41,8 +42,33 @@ class Player(CircleShape):
             self.move(dt)
         if keys[pygame.K_DOWN]:
             self.move(-dt)
+        if keys[pygame.K_SPACE]:
+            self.shoot()
+        
+        self.shoot_timer -= dt
     
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
+
+# create method to shoot
+    def shoot(self):
+        if self.shoot_timer <= 0:
+            shooted = Shot(self.position[0], self.position[1], SHOOT_RADIUS)
+            shooted.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+            self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+
+##############################################################################
+# create a shoot class
+
+class Shot(CircleShape):
+    def __init__(self, x, y, radius):
+        super().__init__(x, y, radius)
+
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, (0, 0, 255), self.position, self.radius)
+
+    def update(self, dt):
+        self.position += self.velocity * dt

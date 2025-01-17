@@ -11,12 +11,14 @@ fps_maximizer = pygame.time.Clock()
 dt = 0
 
 # creating containers and assigning elements on containers
-updatabe = pygame.sprite.Group()
+updatable = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
 asteroids = pygame.sprite.Group()
-AsteroidField.containers = (updatabe)
-Player.containers = (updatabe, drawable)
-Asteroid.containers = (asteroids, updatabe, drawable)
+shoots = pygame.sprite.Group()
+AsteroidField.containers = (updatable)
+Player.containers = (updatable, drawable)
+Asteroid.containers = (asteroids, updatable, drawable)
+Shot.containers = (shoots, updatable, drawable)
 
 #create the player instance
 playr = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
@@ -49,7 +51,7 @@ def main ():
              item.draw(screen)
 
 # update the updatable container items
-        for item in updatabe:
+        for item in updatable:
              item.update(dt)
 
 # teste if any asteroid collide with player and end the game if so
@@ -57,6 +59,10 @@ def main ():
             if item.collide_test(playr):
                 print("Game over!")
                 return
+            for bullet in shoots:
+                if item.collide_test(bullet):
+                        item.split()
+                        bullet.kill()
 
 # make screen update on every iteration of infinite loop - must be the final of the loop
         pygame.display.flip()

@@ -22,6 +22,7 @@ class CircleShape(pygame.sprite.Sprite):
         else:
             return False
 
+
 # functions to be override by sub-classes
     def draw(self, screen):
         pass
