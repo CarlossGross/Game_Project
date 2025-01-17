@@ -6,12 +6,12 @@ from player import *
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 fps_maximizer = pygame.time.Clock()
-dt = 0
 
 #create the player instance
 playr = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
 def main ():
+    dt = 0
     print("Starting asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
@@ -31,12 +31,15 @@ def main ():
 # draw the player
         playr.draw(screen)
 
+# update player position
+        playr.update(dt)
 
 # make screen update on every iteration of infinite loop - must be the final of the loop
         pygame.display.flip()
 
 # maximize fps on 60FPS
         dt = fps_maximizer.tick(60)/1000
+        #print(dt)
 
 
 
